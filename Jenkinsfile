@@ -23,7 +23,7 @@ node {
       //def job = build job: 'SonarQubeJob'
       withSonarQubeEnv("Sonarcloud") {  // SonarCloud is Configure system properties set under Manage Jenkins
        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.4.0.905:sonar ' + 
-          '-f all/pom.xml ' +
+          '-f /pom.xml ' +
           '-Dsonar.projectKey=WannaCry:WannaCry ' +
           '-Dsonar.login=manee2k6 ' +
           '-Dsonar.password=9c4ba1e2ae9234a20a7f83a726589c229fcac5e2 ' +
