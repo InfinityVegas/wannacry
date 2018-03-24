@@ -17,6 +17,11 @@ node {
          sh 'mvn test '
       }
    }
+   
+   stage('SonarQube Analysis') {
+    echo 'Code inspection started..' 
+   }
+   
    stage('Package') {
     echo 'Packaged application' 
       withMaven(jdk: 'JDK-1.8', maven: 'Maven-3.3.9') {
