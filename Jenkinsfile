@@ -22,7 +22,8 @@ node {
     echo 'Code inspection started..' 
       //def job = build job: 'SonarQubeJob'
       withSonarQubeEnv("Sonarcloud") {  // SonarCloud is Configure system properties set under Manage Jenkins
-       sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.4.0.905:sonar ' + 
+         withMaven(jdk: 'JDK-1.8', maven: 'Maven-3.3.9') {
+         sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.4.0.905:sonar ' + 
           '-f /pom.xml ' +
           '-Dsonar.projectKey=WannaCry:WannaCry ' +
           '-Dsonar.login=manee2k6 ' +
@@ -32,6 +33,7 @@ node {
           '-Dsonar.tests=. ' +
           '-Dsonar.test.inclusions=**/*Test*/** ' +
           '-Dsonar.exclusions=**/*Test*/**' 
+         }
       }
    }
    
