@@ -20,6 +20,7 @@ node {
    
    stage('SonarQube Analysis') {
     echo 'Code inspection started..' 
+      def job = build job: 'SonarQubeJob'
    }
    
    stage('Package') {
