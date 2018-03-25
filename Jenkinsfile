@@ -14,7 +14,7 @@ node {
    stage('Test Execution') {
     echo 'Test is executed' 
       withMaven(jdk: 'JDK-1.8', maven: 'Maven-3.5.3') {
-         sh 'mvn test'
+         sh 'mvn test package'
       }
    }
    
@@ -23,7 +23,7 @@ node {
       //def job = build job: 'SonarQubeJob'
       withSonarQubeEnv("Sonarcloud") {  // SonarCloud is Configure system properties set under Manage Jenkins
          withMaven(jdk: 'JDK-1.8', maven: 'Maven-3.5.3') {
-           sh 'mvn package sonar:sonar'  
+           sh 'mvn '  
           //'-f /pom.xml ' +
           //'-Dsonar.projectKey=WannaCry:WannaCry ' +
           //'-Dsonar.login=manee2k6 ' +
