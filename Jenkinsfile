@@ -8,22 +8,22 @@ node {
    stage('Maven Build') {
     echo 'Build is started'
       withMaven(jdk: 'JDK-1.8', maven: 'Maven-3.3.9') {
-         sh 'mvn clean compile '
+         sh 'mvn clean compile  '
       }
    }
    stage('Test Execution') {
     echo 'Test is executed' 
       withMaven(jdk: 'JDK-1.8', maven: 'Maven-3.3.9') {
-         sh 'mvn test '
+         sh 'mvn test'
       }
    }
    
    stage('SonarQube Analysis') {
-    echo 'Code inspection started..' 
+   
       //def job = build job: 'SonarQubeJob'
       withSonarQubeEnv("Sonarcloud") {  // SonarCloud is Configure system properties set under Manage Jenkins
          withMaven(jdk: 'JDK-1.8', maven: 'Maven-3.3.9') {
-           sh 'mvn org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar'  
+           sh 'mvn package sonar:sonar'  
           //'-f /pom.xml ' +
           //'-Dsonar.projectKey=WannaCry:WannaCry ' +
           //'-Dsonar.login=manee2k6 ' +
@@ -36,6 +36,15 @@ node {
          }
       }
    }
+   
+   stage("Quality Gate") {
+      timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
+      def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+       if (qg.status != 'OK') {
+            error "Pipeline aborted due to quality gate failure: ${qg.status}"
+         }
+      }
+    }
    
    stage('Package') {
     echo 'Packaged application' 
